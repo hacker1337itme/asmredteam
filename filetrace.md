@@ -5,8 +5,8 @@ Below is a simple assembly program that loops and checks if a specified file exi
 ```asm
 section .data
     filename db 'testfile.txt', 0  ; File name to check
-    msg_exists db 'File exists', 10 ; Message for file exists
-    msg_not_exists db 'File does not exist', 10 ; Message for file does not exist
+    msg_exists db '[+] File exists', 10 ; Message for file exists
+    msg_not_exists db '[-] File does not exist', 10 ; Message for file does not exist
 
 section .bss
     fd resb 1                       ; File Descriptor storage
@@ -26,21 +26,21 @@ _start:
     je file_not_exists      ; If it is -1, file does not exist
 
 file_exists:
-    ; Print "File exists"
+    ; Print "[!] File exists"
     ; Write the message to stdout
     mov rax, 1             ; syscall: sys_write
     mov rdi, 1             ; file descriptor: stdout
     mov rsi, msg_exists    ; pointer to the message
-    mov rdx, 14            ; message length
+    mov rdx, 50            ; message length
     syscall
     jmp exit               ; Exit
 
 file_not_exists:
-    ; Print "File does not exist"
+    ; Print "[x] File does not exist"
     mov rax, 1             ; syscall: sys_write
     mov rdi, 1             ; file descriptor: stdout
     mov rsi, msg_not_exists; pointer to the message
-    mov rdx, 24            ; message length
+    mov rdx, 50            ; message length
     syscall
 
 exit:
@@ -48,6 +48,7 @@ exit:
     mov rax, 60            ; syscall: sys_exit
     xor rdi, rdi           ; exit code 0
     syscall
+
 ```
 
 ### How to Assemble and Run
